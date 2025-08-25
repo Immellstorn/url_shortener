@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveLinkRequest;
-use App\Models\Link;
 use App\Services\SaveClickService;
 use App\Services\SaveLinkService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ShortenerController extends Controller
 {
@@ -28,12 +26,10 @@ class ShortenerController extends Controller
         }
     }
 
-    public function redirect($shortUrl, Request $request): RedirectResponse
+    public function redirect($shortUrl): RedirectResponse
     {
-        $link = Link::where('short_url', $shortUrl)->firstOrFail();
+        $originalUrl = $this->clickService->execute($shortUrl);
 
-        $this->clickService->execute($request);
-
-        return redirect()->to($link->original_url);
+        return redirect()->to($originalUrl);
     }
 }

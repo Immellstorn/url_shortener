@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('user_agent');
             $table->timestamp('clicked_at');
             $table->timestamps();
+            $table->foreignId('link_id')->nullable()->constrained()->cascadeOnDelete();
         });
     }
 
